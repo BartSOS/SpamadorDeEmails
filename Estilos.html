@@ -1,0 +1,280 @@
+<style>
+  /* --- DESIGN SYSTEM GERAL (GitHub Dark Mode) --- */
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    color: #c9d1d9; /* Texto claro */
+    background-color: #0d1117; /* Fundo super escuro oficial do GitHub */
+    padding: 16px;
+    margin: 0;
+  }
+  
+  h2 {
+    font-size: 16px;
+    font-weight: 600;
+    margin-top: 0;
+    margin-bottom: 16px;
+    border-bottom: 1px solid #21262d; /* Borda escura */
+    padding-bottom: 8px;
+    color: #e6edf3; /* Título um pouco mais branco para destacar */
+  }
+  
+  .form-group {
+    margin-bottom: 16px;
+  }
+  
+  label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: #c9d1d9;
+  }
+  
+  /* --- ESTILOS DOS INPUTS E TEXTAREAS --- */
+  input[type="text"], input[type="number"], select, .input-expansivel {
+    width: 100%;
+    padding: 5px 12px;
+    font-size: 14px;
+    line-height: 20px;
+    color: #c9d1d9;
+    background-color: #0d1117; /* Fundo do input */
+    border: 1px solid #30363d; /* Borda escura */
+    border-radius: 6px;
+    box-sizing: border-box;
+    transition: 80ms cubic-bezier(0.33, 1, 0.68, 1);
+  }
+  
+  .input-expansivel {
+    font-family: inherit;
+    resize: none; 
+    overflow: hidden; 
+    min-height: 32px; 
+  }
+
+  /* Efeito de Foco (Azul brilhante do Dark Mode) */
+  input:focus, select:focus, .input-expansivel:focus {
+    border-color: #58a6ff; 
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.3);
+    background-color: #0d1117;
+  }
+  
+  .note {
+    font-size: 12px;
+    color: #8b949e; /* Cinza médio para anotações */
+    margin-top: 4px;
+  }
+  
+  .btn-primary {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px; 
+    color: #ffffff;
+    background-color: #238636; /* Verde adaptado para telas escuras */
+    border: 1px solid rgba(240, 246, 252, 0.1);
+    border-radius: 6px;
+    padding: 5px 10px;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 8px;
+    transition: 0.2s ease;
+  }
+  
+  .btn-primary:hover {
+    background-color: #2ea043; /* Verde mais vibrante no hover */
+  }
+  
+  .btn-primary:disabled {
+    background-color: rgba(35, 134, 54, 0.6);
+    color: rgba(255, 255, 255, 0.5);
+    cursor: not-allowed;
+    border-color: transparent;
+  }
+  
+  /* --- MENSAGEM DE FEEDBACK --- */
+  #mensagemStatus {
+    margin-top: 16px;
+    font-size: 13px;
+    font-weight: 600;
+    display: none;
+    padding: 8px 12px;
+    border-radius: 6px;
+  }
+
+  /* --- LAYOUTS DE LINHA (FLEX) --- */
+  .input-row {
+    gap : 10px;
+    flex-direction : row;
+    display : flex;
+  }
+
+  .input-row > div {
+    flex : 1;
+    display : flex;
+    flex-direction : column
+  }
+
+  /* --- BOTÕES SECUNDÁRIOS --- */
+  .btn-adicionar {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #8b949e;
+    background-color: #21262d; /* Fundo cinza escuro */
+    border: 1px dashed #30363d;
+    border-radius: 6px;
+    padding: 6px 12px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    width: 100%;
+    justify-content: center;
+    transition: 0.2s ease;
+  }
+  
+  .btn-adicionar:hover {
+    background-color: #30363d;
+    border-color: #58a6ff;
+    color: #58a6ff; /* Texto fica azul ao passar o mouse */
+  }
+  
+  .icone-plus {
+    font-size: 16px;
+    font-weight: bold;
+  }
+  
+  .btn-remover {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 34px;
+    height: 34px;
+    background-color: #21262d;
+    border: 1px solid #30363d;
+    border-radius: 6px;
+    color: #8b949e; 
+    font-size: 14px;
+    cursor: pointer;
+    padding: 0;
+    transition: all 0.2s ease-in-out;
+  }
+
+  /* O vermelho de alerta dark */
+  .btn-remover:hover {
+    background-color: rgba(248, 81, 73, 0.1); /* Vermelho translúcido suave */
+    border-color: #f85149;
+    color: #f85149; 
+  }
+
+  /* ======================================================== */
+  /* --- ESTILOS DO DROPDOWN (MANTIDOS EXATAMENTE IGUAIS) --- */
+  /* ======================================================== */
+
+  .dropdown-container {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    position: relative;
+    display: inline-block;
+  }
+
+  .btn-dropdown {
+    background-color: #21262d; 
+    color: #c9d1d9; 
+    border: 1px solid #30363d; 
+    border-radius: 6px; 
+    padding: 6px 16px; 
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px; 
+    box-shadow: 0 1px 0 rgba(27, 31, 36, 0.04); 
+    transition: 0.2s cubic-bezier(0.3, 0, 0.5, 1);
+  }
+
+  .btn-dropdown:hover {
+    background-color: #30363d; 
+    border-color: #8b949e; 
+    transition-duration: 0.1s;
+  }
+
+  .btn-dropdown .setinha {
+    font-size: 10px;
+    color: #8b949e;
+  }
+
+  .dropdown-menu {
+    display: none; 
+    position: absolute;
+    top: 100%;
+    left: 0;
+    margin-top: 4px;
+    background-color: #161b22; 
+    border: 1px solid #30363d;
+    border-radius: 6px;
+    box-shadow: 0 8px 24px rgba(1, 4, 9, 1); 
+    min-width: 180px;
+    z-index: 1000;
+    padding: 8px; 
+    flex-direction: column; 
+    gap: 4px; 
+  }
+
+  .dropdown-menu.show {
+    display: flex;
+  }
+
+  .dropdown-item {
+    padding: 6px 12px; 
+    color: #c9d1d9;
+    font-size: 14px;
+    line-height: 1.5;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-radius: 6px; 
+    transition: background-color 0.1s ease;
+  }
+
+  .dropdown-item:hover {
+    background-color: #30363d; 
+    color: #ffffff;
+  }
+
+  .dropdown-item.disable {
+    color: #484f58;
+    pointer-events: none;
+  }
+
+  /* Classe para o estado de "Parar" */
+.btn-stop {
+  background-color: #d29922 !important; /* Laranja/Amarelo */
+  border-color: #b07b1a !important;
+  color: #ffffff !important;
+}
+
+.btn-stop:hover {
+  background-color: #b07b1a !important;
+}
+.btn-stop-square {
+  font-family: "Segoe UI Symbol", "Arial Unicode MS", sans-serif;
+  margin-left: 15px;
+  font-size: 14px; 
+  margin-right: 6px;
+}
+
+/* Classe para o estado de "Abortando" (Vermelho) */
+.btn-aborting {
+  background-color: #da3633 !important; /* Vermelho vivo para modo escuro */
+  border-color: #b62324 !important; /* Borda levemente mais escura */
+  color: #ffffff !important;
+  cursor: wait !important; /* Muda o mouse para ícone de carregamento */
+  opacity: 0.8; /* Dá um leve efeito de botão desabilitado */
+}
+</style>

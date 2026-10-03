@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <base target="_top">
+  <?!= include('Estilos'); ?>
+  <?!= include('JavaScript'); ?>
+</head>
+<body>
+  <h2>Parâmetros do Script</h2>
+  
+  <form id="formularioConfig">
+    <div class="form-group">
+      <label for="Intervalo">Intervalo De Linhas</label>
+      <div class="input-row"> 
+        <input type="number" id="line_start" name="line_start" placeholder="Ínicio (ex.:2)" class="input-numero" required>
+        <input type="number" id="line_end" name="line_end" placeholder="Fim (ex.:100)" class="input-numero" required>
+      </div>
+      <div class="note">Onde o script deve comecar e terminar</div>
+    </div>
+
+    <div class="form-group">
+      <label for="assunto">Assunto</label>
+      <textarea id="assunto" name="assunto" placeholder="Assunto da mensagem" class="input-expansivel" rows="1" required></textarea>
+    </div>
+
+    <div class="form-group">
+      <label for="mensagem">Mensagem Desejada</label>
+      <textarea id="mensagem" name="mensagem" placeholder="Para dar enter coloque \n" class="input-expansivel" rows="1" required></textarea>
+      <div class="note">Escreva sua mensagem. Use <b>{{nome_da_variavel}}</b> para os dados que serão substituídos pelas colunas da planilha.</div>
+    </div>
+
+    <div class="form-group">
+      <label for="tipoAcao">Ação desejada</label>
+      <select id="tipoAcao" name="tipoAcao">
+        <option value="extrair">Extrair Relatório</option>
+        <option value="formatar">Apenas Formatar</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <div class="input-row">
+        <div>
+          <label for="coluna_email">Coluna do Email</label>
+          <input type="text" id="coluna_email" name="coluna_email" class="input-coluna" required>
+          <div class="note">Digite a coluna em que estão os emails</div>
+        </div>
+        <div>
+          <label for="coluna_enviado">Coluna Enviados</label>
+          <input type="text" id="coluna_enviado" name="coluna_enviado" class="input-coluna" required>
+          <div class="note">Para ter certeza dos emails que foram devidamente enviados</div>          
+        </div>
+      </div>
+    </div>
+
+    <div id="area_colunas_dinamicas"></div>
+
+    <div class="dropdown-container">
+      <button class="btn-dropdown" type="button" onclick="toggleMenu(event)">Adicionar Coluna Extra
+        <span class="setinha">▼</span>
+      </button>
+
+      <div class="dropdown-menu" id="menu_colunas">
+        <div class="dropdown-item" data-value="nome_pessoal" onclick="selecionarColunaPersonalizada('nome_pessoal', 'Nome Pessoal', this)">Nome Pessoal</div>
+        <div class="dropdown-item" data-value="nome_equipe" onclick="selecionarColunaPersonalizada('nome_equipe', 'Nome Equipe', this)">Nome Equipe</div>
+        <div class="dropdown-item" data-value="confirmacao" onclick="selecionarColunaPersonalizada('confirmacao', 'Confirmação', this)">Confirmação</div>
+        <div class="dropdown-item" data-value="id_anexo" onclick="selecionarColunaPersonalizada('id_anexo', 'ID Anexo', this)">ID Anexo</div>
+        <div class="dropdown-item" data-value="coluna_mensagem" onclick="selecionarColunaPersonalizada('coluna_mensagem', 'Mensagem Personalizada', this)">Mensagem Personalizada</div>
+      </div>
+    </div>
+
+    <button type="button" class="btn-primary" id="btnExecutar" onclick="iniciarScript()">Executar</button>
+    
+    <div id="mensagemStatus"></div>
+    
+  </form>
+</body>
+</html>

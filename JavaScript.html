@@ -1,0 +1,216 @@
+<script>
+    let scriptRondando = false;
+
+    // Conserta e valida inputs
+    document.addEventListener("DOMContentLoaded", function() {
+    // 1. Entrada de colunas, 1 char
+      const inputsColuna = document.querySelectorAll('.input-coluna');
+      inputsColuna.forEach(function(input) {
+        blindaInputColuna(input)
+      });
+
+        // 2. Regra para todos os números (Apenas 0-9)
+        const inputsNumero = document.querySelectorAll('.input-numero');
+        inputsNumero.forEach(function(input) {
+          blindaInputRow(input);
+        });
+
+        // 3. Texto expansivel
+        const inputArea = document.querySelectorAll('.input-expansivel');
+        inputArea.forEach(function (input)
+        {
+          input.addEventListener('input', function ()
+          {
+            this.style.height = 'auto';
+            this.style.height = this.scrollHeight + 'px';
+          });
+        });
+      });
+
+    function blindaInputColuna(input)
+    {
+      input.maxLength = 1;
+      input.placeholder = 'A, B, C...';
+
+      input.addEventListener('keydown', function(event)
+      {
+        if (event.key.length > 1) return;
+
+        if (event.key === "Dead" || !/^[a-zA-Z]$/.test(event.key))
+          event.preventDefault();
+      });
+
+      input.addEventListener('input', function() {
+        this.value = this.value.replace(/[^a-zA-Z]/g, '').toUpperCase();
+      });
+
+    }
+
+    function blindaInputRow(input)
+    {
+      input.min = 1;
+      input.addEventListener('keydown', function(event)
+      {
+        if (event.key === "Dead" || !/^[0-9]$/.test(event.key))
+          event.preventDefault();
+      });
+
+      input.addEventListener('input', function()
+      {
+        this.value = this.value.replace(/[^0-9]/g, '');
+      });
+    }
+
+    function selecionarColunaPersonalizada(nome_variavel, nome_title, div_clicada)
+    {    
+      const container_inputs = document.getElementById('area_colunas_dinamicas');
+      const novo_campo = document.createElement('div');
+      novo_campo.className = 'form-group'
+
+      novo_campo.innerHTML =
+      `<label for="${nome_variavel}">Coluna ${nome_title}</label>
+      <div style="display: flex; gap: 8px; align-items: stretch;">
+        <input type="text" id="${nome_variavel}" name="${nome_variavel}" class="input-coluna" style="flex: 1;" required>
+        <button type="button" class="btn-remover" onclick="removerColunaDinamica(this, '${nome_variavel}')" title="Remover coluna">✕</button>
+      </div>
+      <div class="note">Digite a coluna em que está ${nome_title}</div>`;
+
+      const input = novo_campo.querySelector('.input-coluna')
+      blindaInputColuna(input);
+
+      // verifico existencia de pair e crio se necessario
+
+      let ultimo_pair = container_inputs.lastElementChild;
+      if (!ultimo_pair || ultimo_pair.children.length >= 2)
+      {
+        ultimo_pair = document.createElement('div');
+        ultimo_pair.className = 'input-row'
+      }
+
+      ultimo_pair.appendChild(novo_campo)
+      container_inputs.appendChild(ultimo_pair);
+
+      div_clicada.classList.add('disable');
+    }
+
+    function removerColunaDinamica(botao, nome_variavel)
+    {
+      const linha = botao.closest('.input-row')
+      botao.closest('.form-group').remove();
+      const menus = document.getElementById('menu_colunas').children;
+
+      if (linha.children.length === 0)
+        linha.remove();
+
+      Array.from(menus).forEach(item =>
+      {
+        if (item.dataset.value === nome_variavel && item)
+          item.classList.remove('disable')
+      })
+    }
+
+    function toggleMenu(event)
+    {
+      document.getElementById('menu_colunas').classList.toggle('show');
+      event.stopPropagation();
+    }
+
+    window.onclick = function(event)
+    {
+      if(!event.target.closest('.dropdown-container'))
+      {
+        const menu = document.getElementById('menu_colunas');
+
+        if (menu.classList.contains('show'))
+          menu.classList.remove('show')
+      }
+    }
+
+    function required_values(form, chave, nome)
+    {
+      if (!form[chave].value)
+      {
+        mostrarMensagem('Erro: A '+ nome +' é obrigatória.', '#f85149', 'rgba(248, 81, 73, 0.1)', '#f85149');
+        return true;
+      }
+
+      return false;
+    }
+
+    function iniciarScript() {
+      var btn = document.getElementById('btnExecutar');
+      var msg = document.getElementById('mensagemStatus');
+      var form = document.getElementById('formularioConfig');
+
+      if(required_values(form, 'line_start', 'Linha Inicial')) return;
+      if(required_values(form, 'line_end', 'Linha Final')) return;
+      if(required_values(form, 'coluna_email', 'Coluna Email')) return;
+      if(required_values(form, 'coluna_enviado', 'Coluna Enviado')) return;
+      if(required_values(form, 'assunto', 'Assunto da Mensagem')) return;
+      if(required_values(form, 'mensagem', 'Corpo da Mensagem')) return;
+      
+      if (scriptRondando)
+      {
+        resetBtnAbortando(btn);
+        return;
+      }
+
+      setTimeout(function()
+      {
+        if (btn.disabled)
+          btn.disabled = false;
+      }, 1)
+
+      msg.style.display = 'none';
+      resetBtnProcessando(btn);
+
+      // Comunica com o arquivo Code.gs
+      google.script.run
+        .withSuccessHandler(function(respostaSucesso) {
+          resetBtnExecutar(btn);
+          mostrarMensagem(respostaSucesso, '#1f883d', '#dafbe1', '#4ac26b'); // Verde sucesso
+        })
+        .withFailureHandler(function(erro) {
+          resetBtnExecutar(btn);
+          mostrarMensagem('Erro: ' + erro.message, '#cf222e', '#ffebe9', '#ff8182'); // Vermelho erro
+        })
+        .executarAutomacao(form); // Chama a função que criamos no Code.gs
+    }
+
+    function resetBtnExecutar(btn)
+    {
+      btn.disabled = false;
+      scriptRondando = false;
+      btn.innerHTML = 'Executar';
+      btn.classList.remove('btn-aborting');
+      btn.classList.remove('btn-stop');
+    }
+
+    function resetBtnProcessando(btn)
+    {
+      // Muda o botão para estado de "carregando"
+      scriptRondando = true;
+      btn.disabled = true;
+      btn.innerHTML = 'Processando<span class="btn-stop-square">&#x2610;</span>';
+      btn.classList.add('btn-stop');
+    }
+
+    function resetBtnAbortando(btn)
+    {
+      btn.disabled = true;
+      btn.classList.remove('btn-stop');
+      btn.classList.add('btn-aborting');
+      btn.innerHTML = 'Abortando...'
+      google.script.run.abortarAutomacao();
+    }
+
+    // Função auxiliar para exibir o balãozinho de alerta estilo GitHub
+    function mostrarMensagem(texto, corTexto, corFundo, corBorda) {
+      var msg = document.getElementById('mensagemStatus');
+      msg.innerHTML = texto;
+      msg.style.color = corTexto;
+      msg.style.backgroundColor = corFundo;
+      msg.style.border = '1px solid ' + corBorda;
+      msg.style.display = 'block';
+    }
+  </script>

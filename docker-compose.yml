@@ -1,0 +1,5 @@
+services:
+  setup-planilha:
+    build: .
+    stdin_open: true
+    tty: true    
