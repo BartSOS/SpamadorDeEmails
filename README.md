@@ -56,11 +56,19 @@ O projeto utiliza Docker e Clasp para garantir um ambiente isolado. Isso permite
 O sistema possui 3 serviços diferentes dependendo da sua necessidade:
 
 1. **`clone-project` (Biblioteca / Auto-renovável):** Envia apenas a ponte de conexão. O código real fica hospedado em uma Biblioteca Central e se auto-atualiza.
-   * *Comando:* `docker compose run --rm clone-project`
+   ```bash
+   docker compose run --rm clone-project
+   ```
+
 2. **`clone-this-repository` (Clone Fixo Local):** Envia exatamente os arquivos de código pesado que estão na sua máquina no momento, criando uma cópia estática e independente.
-   * *Comando:* `docker compose run --rm clone-this-repository`
+   ```bash
+   docker compose run --rm clone-this-repository
+   ```
+
 3. **`clone-repository` (Clone Fixo da Nuvem):** Baixa a versão oficial e mais recente diretamente do GitHub oficial e envia para o Apps Script, ignorando possíveis arquivos velhos do seu computador.
-   * *Comando:* `docker compose run --rm clone-repository`
+   ```bash
+   docker compose run --rm clone-repository
+   ```
 
 ### Passo a Passo de Instalação
 
