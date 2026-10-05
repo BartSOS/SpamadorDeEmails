@@ -41,6 +41,13 @@ O painel fornece um feedback visual alterando a cor de fundo das células em cas
 
 Para re-executar testes com e-mails já enviados, deve-se apagar o conteúdo da "Coluna Enviados" da respectiva linha, retirando a trava de segurança.
 
+### 4. Executando na Planilha e Dica de Acesso
+
+Após a instalação, o menu **Automações** ficará disponível no cabeçalho da planilha:
+
+* **Recomendação Essencial (Aba Anônima):** Para abrir e executar o script diretamente na planilha, **recomenda-se fortemente utilizar uma Aba Anônima no navegador** (logando exclusivamente na conta dona ou editora da planilha). O Google Apps Script frequentemente apresenta falhas de permissão, problemas de cookies e bloqueios de execução quando o navegador possui múltiplas contas Google conectadas na mesma sessão.
+* **Autorização Inicial:** Ao executar a ferramenta pela primeira vez, o Google exigirá uma autorização de permissões padrão. Clique em **Avançado** -> **Acessar projeto (não seguro)** e permita o acesso para que ele possa gerenciar os e-mails e ler as linhas da planilha.
+
 ## Como configurar o ambiente e fazer o Deploy (Docker)
 
 O projeto utiliza Docker e Clasp para garantir um ambiente isolado. Isso permite que a instalação do código na nuvem do Google seja feita sem necessidade de instalar Node.js ou lidar com dependências na sua máquina.
