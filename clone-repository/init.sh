@@ -9,6 +9,3 @@ cp /app/.clasp.json /tmp/SpamadorNovo
 cd /tmp/SpamadorNovo
 
 printf "\nEnviando codigo para seu projeto, usando a versao mais nova...\n"
-clasp push -f
-
-printf "\nCodigo enviado com sucesso\n"

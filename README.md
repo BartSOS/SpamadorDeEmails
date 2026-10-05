@@ -8,7 +8,7 @@ Um projeto baseado em Google Apps Script para envio automatizado de e-mails em m
 * **Mensagens Dinâmicas:** Personalização de mensagens para cada destinatário utilizando variáveis.
 * **Anexos em PDF:** Permite anexar arquivos armazenados no Google Drive através do ID do arquivo, com conversão automática para PDF.
 * **Suporte a HTML:** O corpo do e-mail suporta quebras de linha e formatações básicas em HTML.
-* **Controle de Status (Anti-Spam):** O script marca as linhas que já foram enviadas com sucesso e destaca as linhas com falhas, evitando disparos duplicados em execuções futuras.
+* **Controle de Status:** O script marca as linhas que já foram enviadas com sucesso e destaca as linhas com falhas, evitando disparos duplicados em execuções futuras.
 
 ## Guia de Operação e Mapeamento de Colunas
 
@@ -41,23 +41,30 @@ O painel fornece um feedback visual alterando a cor de fundo das células em cas
 
 Para re-executar testes com e-mails já enviados, deve-se apagar o conteúdo da "Coluna Enviados" da respectiva linha, retirando a trava de segurança.
 
-## Como configurar o ambiente (Deploy via Docker)
+## Como configurar o ambiente e fazer o Deploy (Docker)
 
-O projeto utiliza Docker e Clasp para garantir um ambiente isolado. Isso permite que a atualização e o versionamento do código na nuvem do Google sejam feitos sem necessidade de instalar Node.js ou lidar com dependências no ambiente local.
+O projeto utiliza Docker e Clasp para garantir um ambiente isolado. Isso permite que a instalação do código na nuvem do Google seja feita sem necessidade de instalar Node.js ou lidar com dependências na sua máquina.
 
-1. Clone este repositório no seu computador.
-2. Na planilha alvo do Google Sheets, navegue pelo menu superior em **Extensões -> Apps Script**.
-3. No painel do Apps Script, clique no ícone de engrenagem (**Configurações do projeto**) no menu lateral esquerdo e copie o **Código do script (ID)**.
-4. Abra o terminal na raiz do repositório clonado e inicie o assistente:
-   
-   ```bash
-   docker compose build && docker compose run --rm setup-planilha
-   ```
+### Arquitetura de Serviços
+O sistema possui 3 serviços diferentes dependendo da sua necessidade:
 
-5. O assistente solicitará o ID do Script. Cole o ID copiado no passo 3.
-6. A ferramenta do Clasp irá gerar e exibir uma URL de autorização. Copie esta URL, acesse-a em seu navegador e efetue o login na conta do Google para autorizar os escopos do projeto.
-7. Ao final da autorização, o Google redirecionará para uma página `localhost` que falhará em conectar. Isso é o fluxo esperado (Out-Of-Band). **Copie a URL inteira dessa página de falha** na barra de endereços do navegador, retorne ao terminal e cole a URL completa para finalizar a autenticação.
-8. O script automatizado concluirá o "push", sobrescrevendo o código em nuvem com os arquivos locais.
+1. **`clone-project` (Biblioteca / Auto-renovável):** Envia apenas a ponte de conexão. O código real fica hospedado em uma Biblioteca Central e se auto-atualiza.
+   * *Comando:* `docker compose run --rm clone-project`
+2. **`clone-this-repository` (Clone Fixo Local):** Envia exatamente os arquivos de código pesado que estão na sua máquina no momento, criando uma cópia estática e independente.
+   * *Comando:* `docker compose run --rm clone-this-repository`
+3. **`clone-repository` (Clone Fixo da Nuvem):** Baixa a versão oficial e mais recente diretamente do GitHub oficial e envia para o Apps Script, ignorando possíveis arquivos velhos do seu computador.
+   * *Comando:* `docker compose run --rm clone-repository`
 
-Após a conclusão, basta recarregar a página da planilha e o menu **Automações** estará disponível para utilização.
+### Passo a Passo de Instalação
+
+1. Na planilha alvo do Google Sheets, navegue pelo menu superior em **Extensões -> Apps Script**.
+2. No painel do Apps Script, clique no ícone de engrenagem (**Configurações do projeto**) no menu lateral esquerdo e copie o **Código do script (ID)**.
+3. Abra o terminal na raiz do projeto e execute **um** dos comandos acima (Ex: `docker compose run --rm clone-project`).
+4. O assistente solicitará o ID do Script. Cole o ID copiado no passo 2.
+5. A ferramenta irá gerar e exibir uma URL de autorização. 
+6. Efetue o login com a conta Google dona da planilha para autorizar.
+7. Ao final da autorização, o Google redirecionará para uma página `localhost` de erro. Isso é o fluxo esperado! **Copie a URL inteira dessa página de erro** na barra de endereços do navegador, retorne ao terminal e cole a URL completa para finalizar a autenticação.
+8. O script assumirá o controle, avaliará a estratégia do serviço escolhido e finalizará o envio (push) automaticamente com tratamento de erros.
+
+Após a mensagem de sucesso verde no terminal, basta recarregar a página da planilha e o menu **Automações** estará disponível no topo para utilização.
 
