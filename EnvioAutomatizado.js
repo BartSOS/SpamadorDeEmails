@@ -16,42 +16,6 @@ var coluna_nome;
 var coluna_nome_equipe;
 var coluna_mensagem;
 
-
-// 1. Cria um menu personalizado quando a planilha for aberta
-function onOpen() {
-  var ui = SpreadsheetApp.getUi();
-  ui.createMenu('Automações')
-    .addItem('🤖Configurar Script', 'abrirSidebar')
-    .addToUi();
-}
-
-
-function valida_line(line)
-{
-  return line - 1
-}
-
-function valida_coluna(coluna)
-{
-  if (!coluna) return undefined;
-
-  coluna = coluna.toUpperCase();
-
-  var col = 0;
-
-  for (let i = 0; i < coluna.length; i++)
-    col = col * 26 + (parseInt(coluna.charCodeAt(i)) - 64)
-
-  return col - 1;
-}
-
-function valida_personalize(dados, i, coluna)
-{
-  if (coluna === undefined || coluna === null) return undefined;
-
-  return dados[i][coluna];
-}
-
 function naoPodeEnviar(dados, i)
 {
   return dados[i][coluna_enviado] || (coluna_confirmado && !dados[i][coluna_confirmado])
@@ -80,7 +44,7 @@ function obtemMensagemHtml(dados, i)
   obj_personalize[name_anexo] = valida_personalize(dados, i, coluna_id);
   obj_personalize[name_mensagem] = valida_personalize(dados, i, coluna_mensagem);
 
-  return substitue_personalized(mensagem.replace(/\\n/g, '<br>'), obj_personalize);
+  return substitue_personalized(mensagem.replace(/\\n|\n/g, '<br>'), obj_personalize);
 }
 
 function obtemAssunto(dados, i)
@@ -122,7 +86,30 @@ function obtemAnexo(dados, i, aba)
   } 
 }
 
-// 3. Função que recebe os dados do painel lateral (HTML)
+function substitue_personalized(mensagem, dadosDaLinha) {
+  // 1. A mensagem que veio do seu HTML
+  const mensagemRecebida = mensagem;
+  
+  // 3. A mágica da substituição
+  // O Regex /\{\{(.*?)\}\}/g procura tudo que está entre {{ e }}
+  const mensagemPronta = mensagemRecebida.replace(/\{\{(.*?)\}\}/g, function(match, nome_variavel) {
+    // Remove espaços em branco por precaução
+    const chave = nome_variavel.trim(); 
+    
+    if (dadosDaLinha[chave] === undefined)
+      throw new Error("O nome entre chaves não está no programa, insira entre chaves {{ }} nome, nome_equipe ou mensagem");
+    
+    return dadosDaLinha[chave];
+  });
+  
+  return mensagemPronta;
+}
+
+function abortarAutomacao()
+{
+  CacheService.getUserCache().put('kill_switch', 'true', 300);
+}
+
 function executarAutomacao(dadosDoFormulario) {
   CacheService.getUserCache().remove('kill_switch');
 
@@ -164,40 +151,3 @@ function executarAutomacao(dadosDoFormulario) {
 
   return "Foram enviados " + spamador.getQtd() + " emails nessa tentativa";
 }
-
-function include(filename) {
-  return HtmlService.createHtmlOutputFromFile(filename).getContent();
-}
-
-function abrirSidebar() {
-  // Mudou de createHtmlOutputFromFile para createTemplateFromFile().evaluate()
-  var html = HtmlService.createTemplateFromFile('BarraLateral').evaluate()
-      .setTitle('Configurações')
-      .setWidth(300);
-  SpreadsheetApp.getUi().showSidebar(html);
-}
-
-function substitue_personalized(mensagem, dadosDaLinha) {
-  // 1. A mensagem que veio do seu HTML
-  const mensagemRecebida = mensagem;
-
-  // 3. A mágica da substituição
-  // O Regex /\{\{(.*?)\}\}/g procura tudo que está entre {{ e }}
-  const mensagemPronta = mensagemRecebida.replace(/\{\{(.*?)\}\}/g, function(match, nome_variavel) {
-    // Remove espaços em branco por precaução
-    const chave = nome_variavel.trim(); 
-    
-    if (dadosDaLinha[chave] === undefined)
-      throw new Error("O nome entre chaves não está no programa, insira entre chaves {{ }} nome, nome_equipe, anexo ou mensagem");
-
-    return dadosDaLinha[chave];
-  });
-
-  return mensagemPronta;
-}
-
-function abortarAutomacao()
-{
-  CacheService.getUserCache().put('kill_switch', 'true', 300);
-}
-

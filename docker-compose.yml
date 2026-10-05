@@ -1,5 +1,20 @@
+version: '1.1'
+
 services:
-  setup-planilha:
+  clone-project:
     build: .
     stdin_open: true
-    tty: true    
+    tty: true
+    command: ["/app/clone-project/init.sh"]
+
+  clone-this-repository:
+    build: .
+    stdin_open: true
+    tty: true
+    command: ["/app/clone-this-repository/init.sh"]
+    
+  clone-repository:
+    build: .
+    stdin_open: true
+    tty: true
+    command: ["/app/clone-repository/init.sh"]

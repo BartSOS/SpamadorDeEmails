@@ -6,7 +6,6 @@ WORKDIR /app
 
 COPY . /app
 
-RUN dos2unix setup.sh && chmod +x setup.sh
+RUN find . -name "*.sh" -exec dos2unix {} + && find . -name "*.sh" -exec chmod +x {} +
 
-ENTRYPOINT [ "/app/setup.sh" ]
-
+ENTRYPOINT [ "/app/clone-base/init.sh" ]

@@ -15,15 +15,9 @@ if [ -z "$scriptId" ]; then
     exit 1
 fi
 
-# Corrigido o "rootDir" dentro do JSON
 echo "{\"scriptId\":\"$scriptId\", \"rootDir\":\".\"}" > .clasp.json
-echo "Arquivo .clasp.json criado."
 
 printf "\nFazendo login no google\n"
 clasp login --no-localhost
 
-printf "\nEnviando codigo planilha...\n"
-clasp push -f
-
-printf "\nCodigo enviado para planilha com sucesso\n"
-
+exec "$@"

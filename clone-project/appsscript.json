@@ -1,0 +1,13 @@
+{
+    "timeZone": "America/Sao_Paulo",
+    "exceptionLogging": "STACKDRIVER",
+    "runtimeVersion": "V8",
+    "dependencies": {
+    "libraries": [{
+    "userSymbol": "Spamador",
+    "libraryId": "AKfycbz0MYMxtTLkTeP-GarECcEqyaS4Xf6voraPXn5rSQhzg9eMBZp4wH8PkaK2DAopbr8",
+    "version": "0",
+    "developmentMode": true
+    }]
+  }
+}
