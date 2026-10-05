@@ -17,4 +17,6 @@ services:
     build: .
     stdin_open: true
     tty: true
+    env_file:
+      - .env
     command: ["/app/clone-repository/init.sh"]
