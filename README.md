@@ -57,29 +57,31 @@ O sistema possui 3 serviços diferentes dependendo da sua necessidade:
 
 1. **`clone-project` (Biblioteca / Auto-renovável):** Envia apenas a ponte de conexão. O código real fica hospedado em uma Biblioteca Central e se auto-atualiza.
    ```bash
-   docker compose run --rm clone-project
+   docker compose run --rm --service-ports clone-project
    ```
 
 2. **`clone-this-repository` (Clone Fixo Local):** Envia exatamente os arquivos de código pesado que estão na sua máquina no momento, criando uma cópia estática e independente.
    ```bash
-   docker compose run --rm clone-this-repository
+   docker compose run --rm --service-ports clone-this-repository
    ```
 
 3. **`clone-repository` (Clone Fixo da Nuvem):** Baixa a versão oficial e mais recente diretamente do GitHub oficial e envia para o Apps Script, ignorando possíveis arquivos velhos do seu computador.
    ```bash
-   docker compose run --rm clone-repository
+   docker compose run --rm --service-ports clone-repository
    ```
 
 ### Passo a Passo de Instalação
 
+**Pré-requisito (Apenas na primeira vez):** Você precisa habilitar a API do Google Apps Script na sua conta Google. Acesse [https://script.google.com/home/usersettings](https://script.google.com/home/usersettings) e certifique-se de que a opção **Google Apps Script API** está **LIGADA (ON)**.
+
 1. Na planilha alvo do Google Sheets, navegue pelo menu superior em **Extensões -> Apps Script**.
 2. No painel do Apps Script, clique no ícone de engrenagem (**Configurações do projeto**) no menu lateral esquerdo e copie o **Código do script (ID)**.
-3. Abra o terminal na raiz do projeto e execute **um** dos comandos acima (Ex: `docker compose run --rm clone-project`).
+3. Abra o terminal na raiz do projeto e execute **um** dos comandos de serviço (lembre-se da flag de rede), por exemplo: `docker compose run --rm --service-ports clone-this-repository`.
 4. O assistente solicitará o ID do Script. Cole o ID copiado no passo 2.
-5. A ferramenta irá gerar e exibir uma URL de autorização. 
-6. Efetue o login com a conta Google dona da planilha para autorizar.
-7. Ao final da autorização, o Google redirecionará para uma página `localhost` de erro. Isso é o fluxo esperado! **Copie a URL inteira dessa página de erro** na barra de endereços do navegador, retorne ao terminal e cole a URL completa para finalizar a autenticação.
-8. O script assumirá o controle, avaliará a estratégia do serviço escolhido e finalizará o envio (push) automaticamente com tratamento de erros.
+5. A ferramenta irá gerar e exibir uma URL de autorização no terminal.
+6. Clique no link gerado (geralmente segurando `Ctrl` ou `Cmd`) para abrir no seu navegador. Efetue o login com a conta Google dona da planilha e permita os acessos.
+7. Ao final da autorização, o Google redirecionará você para uma página `localhost` exibindo a mensagem **"Logged in! You may close this page."**. Isso confirma que o seu navegador enviou a aprovação com sucesso para dentro do Docker! Pode fechar a aba.
+8. Retorne ao terminal. Ele já terá capturado a autorização automaticamente, assumirá o controle e finalizará o envio (push) dos códigos com tratamento de erros.
 
 Após a mensagem de sucesso verde no terminal, basta recarregar a página da planilha e o menu **Automações** estará disponível no topo para utilização.
 
