@@ -26,7 +26,7 @@ fi
 echo "{
     \"scriptId\":\"$scriptId\",
     \"rootDir\":\"./src\"
-}" > app/.clasp.json
+}" > /app/.clasp.json
 
 printf "\n${BLUE}Fazendo login no google${NC}\n"
 clasp login --redirect-port 3000
