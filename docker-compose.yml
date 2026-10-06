@@ -1,20 +1,26 @@
 services:
   clone-project:
     build: .
+    ports:
+      - "3000:3000"
     stdin_open: true
     tty: true
     command: ["/app/clone-project/init.sh"]
 
   clone-this-repository:
     build: .
+    ports:
+      - "3000:3000"
     stdin_open: true
     tty: true
     command: ["/app/clone-this-repository/init.sh"]
     
   clone-repository:
     build: .
+    ports:
+      - "3000:3000"
     stdin_open: true
     tty: true
     env_file:
-      - .env
+      - src/.env
     command: ["/app/clone-repository/init.sh"]

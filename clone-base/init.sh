@@ -25,11 +25,11 @@ fi
 
 echo "{
     \"scriptId\":\"$scriptId\",
-    \"rootDir\":\".\"
-}" > .clasp.json
+    \"rootDir\":\"./src\"
+}" > app/.clasp.json
 
 printf "\n${BLUE}Fazendo login no google${NC}\n"
-clasp login --no-localhost
+clasp login --redirect-port 3000
 
 printf "\n\n${BLUE}[SISTEMA] Injetando estrategia do servico escolhido${NC}\n"
 

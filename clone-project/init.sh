@@ -2,7 +2,10 @@
 
 printf "\nPreparando arquivos da biblioteca\n"
 
-cp /app/.clasp.json /app/clone-project/
+echo "{
+    \"scriptId\":\"$scriptId\",
+    \"rootDir\":\".\"
+}" > /app/clone-project/.clasp.json
 
 cd /app/clone-project
 
