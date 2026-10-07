@@ -1,6 +1,6 @@
 name: deploy do codigo nos servidores da google
 
-runs:
+on:
   push:
     branches:
       - main
@@ -14,7 +14,7 @@ jobs:
     - name: Checkout do código
       uses: actions/checkout@v4
 
-    - name: Rodar push via docker compose
+    - name: Rodar push via docker compose clonando o repositorio atual no servidor da google
       env:
         CLASPRC_DATA: ${{ secrets.CLASPRC_DATA }}
         SCRIPT_ID: ${{ secrets.SCRIPT_ID }}

@@ -11,13 +11,11 @@ printf "${BLUE}\n--------------------------------------\n"
 printf "\nConfigurando o Google Apps Script\n"
 printf "\n--------------------------------------\n\n${NC}"
 
-printf "${GRAY}# Na sua Google Sheets clique em Extensoes -> Apps Script ->\n"
-printf "Configuracoes do projeto (no menu lateral esquerdo) -> Codigo do script (ID)${NC}\n"
-
-# Substituído read -p por printf + read comum para garantir compatibilidade com /bin/sh
-printf "${GREEN}Digite agora o ID do seu projeto: ${NC}"
 
 if [ -z "$SCRIPT_ID" ]; then
+    printf "${GRAY}# Na sua Google Sheets clique em Extensoes -> Apps Script ->\n"
+    printf "Configuracoes do projeto (no menu lateral esquerdo) -> Codigo do script (ID)${NC}\n"
+    printf "${GREEN}Digite agora o ID do seu projeto: ${NC}"
     read scriptId
 else
     scriptId="$SCRIPT_ID"
