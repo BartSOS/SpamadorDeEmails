@@ -16,7 +16,12 @@ printf "Configuracoes do projeto (no menu lateral esquerdo) -> Codigo do script 
 
 # Substituído read -p por printf + read comum para garantir compatibilidade com /bin/sh
 printf "${GREEN}Digite agora o ID do seu projeto: ${NC}"
-read scriptId
+
+if [ -z "$SCRIPT_ID" ]; then
+    read scriptId
+else
+    scriptId="$SCRIPT_ID"
+fi
 
 if [ -z "$scriptId" ]; then
     printf "${RED}Erro: o Script Id nao pode ser vazio.${NC}\n"
@@ -29,7 +34,11 @@ echo "{
 }" > /app/.clasp.json
 
 printf "\n${BLUE}Fazendo login no google${NC}\n"
-clasp login --redirect-port 3000
+if [ -z "$CLASPRC_DATA" ]; then
+    clasp login --redirect-port 3000
+else
+    echo "$CLASPRC_DATA" > /root/.clasprc.json
+fi
 
 printf "\n\n${BLUE}[SISTEMA] Injetando estrategia do servico escolhido${NC}\n"
 

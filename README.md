@@ -79,7 +79,7 @@ O sistema possui 3 serviços diferentes dependendo da sua necessidade:
 3. Abra o terminal na raiz do projeto e execute **um** dos comandos de serviço (lembre-se da flag de rede), por exemplo: `docker compose run --rm --service-ports clone-this-repository`.
 4. O assistente solicitará o ID do Script. Cole o ID copiado no passo 2.
 5. A ferramenta irá gerar e exibir uma URL de autorização no terminal.
-6. Clique no link gerado (geralmente segurando `Ctrl` ou `Cmd`) para abrir no seu navegador. Efetue o login com a conta Google dona da planilha e permita os acessos.
+6. Clique no link gerado (geralmente segurando `Ctrl` ou `Cmd`) para bbabrir no seu navegador. Efetue o login com a conta Google dona da planilha e permita os acessos.
 7. Ao final da autorização, o Google redirecionará você para uma página `localhost` exibindo a mensagem **"Logged in! You may close this page."**. Isso confirma que o seu navegador enviou a aprovação com sucesso para dentro do Docker! Pode fechar a aba.
 8. Retorne ao terminal. Ele já terá capturado a autorização automaticamente, assumirá o controle e finalizará o envio (push) dos códigos com tratamento de erros.
 

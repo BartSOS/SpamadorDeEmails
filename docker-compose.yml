@@ -1,26 +1,24 @@
+x-base-service: &base
+  build: .
+  ports:
+    - "3000:3000"
+  stdin_open: true
+  tty: true
+  environment:
+    - SCRIPT_ID
+    - CLASPRC_DATA
+    
 services:
   clone-project:
-    build: .
-    ports:
-      - "3000:3000"
-    stdin_open: true
-    tty: true
+    <<: *base
     command: ["/app/clone-project/init.sh"]
 
   clone-this-repository:
-    build: .
-    ports:
-      - "3000:3000"
-    stdin_open: true
-    tty: true
+    <<: *base
     command: ["/app/clone-this-repository/init.sh"]
     
   clone-repository:
-    build: .
-    ports:
-      - "3000:3000"
-    stdin_open: true
-    tty: true
+    <<: *base
     env_file:
       - src/.env
     command: ["/app/clone-repository/init.sh"]

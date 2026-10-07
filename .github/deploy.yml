@@ -1,0 +1,24 @@
+name: deploy do codigo nos servidores da google
+
+runs:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    
+    - name: Checkout do código
+      uses: actions/checkout@v4
+
+    - name: Rodar push via docker compose
+      env:
+        CLASPRC_DATA: ${{ secrets.CLASPRC_DATA }}
+        SCRIPT_ID: ${{ secrets.SCRIPT_ID }}
+      run: docker compose run --rm clone-this-repository
+
+
+
