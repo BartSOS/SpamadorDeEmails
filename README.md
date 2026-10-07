@@ -6,7 +6,7 @@ Um projeto baseado em Google Apps Script para envio automatizado de e-mails em m
 
 A forma mais fácil de começar a usar o Spamador é fazendo uma cópia da nossa **Planilha Mestre**, que já vem com as colunas formatadas e a *Ponte* pré-instalada apontando sempre para a versão mais recente do nosso motor.
 
-👉 **[Clique aqui para Fazer uma Cópia da Planilha Mestre](https://docs.google.com/spreadsheets/d/1SZ-RDyJMHv51myNd36rbdx88dHRqwVeN_Dubjfx6yV2gUAkk6Nk7HCn4/copy)**
+👉 **[Clique aqui para Fazer uma Cópia da Planilha Mestre](https://docs.google.com/spreadsheets/d/1WWBvY2-O1xiQoj4q2Q9ScDPR3pm_n_C-Rza_jeIINOk/copy)**
 
 
 ## Funcionalidades Principais
