@@ -2,6 +2,13 @@
 
 Um projeto baseado em Google Apps Script para envio automatizado de e-mails em massa diretamente de planilhas do Google Sheets. O projeto inclui uma interface de barra lateral personalizada e suporte para inserção de variáveis dinâmicas no corpo da mensagem, anexos automatizados e filtros de segurança.
 
+## Instalação Rápida (Para Clientes)
+
+A forma mais fácil de começar a usar o Spamador é fazendo uma cópia da nossa **Planilha Mestre**, que já vem com as colunas formatadas e a *Ponte* pré-instalada apontando sempre para a versão mais recente do nosso motor.
+
+👉 **[Clique aqui para Fazer uma Cópia da Planilha Mestre](https://docs.google.com/spreadsheets/d/1SZ-RDyJMHv51myNd36rbdx88dHRqwVeN_Dubjfx6yV2gUAkk6Nk7HCn4/copy)**
+
+
 ## Funcionalidades Principais
 
 * **Envio em Lote:** Dispara e-mails em massa lendo os dados diretamente das linhas configuradas na planilha.

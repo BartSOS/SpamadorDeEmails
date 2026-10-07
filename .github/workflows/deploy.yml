@@ -1,5 +1,7 @@
 name: deploy do codigo nos servidores da google
 
+# Este gatilho faz a esteira rodar automaticamente toda vez
+# que um código novo for enviado (push) para a branch "main"
 on:
   push:
     branches:
@@ -11,14 +13,27 @@ jobs:
 
     steps:
     
+    # Passo 1: O Github baixa todos os arquivos do seu repositório para dentro da máquina virtual
     - name: Checkout do código
       uses: actions/checkout@v4
 
+    # Passo 2: Atualiza o Servidor Central (O Motor do App)
+    # Pega a pasta com o código fonte completo e envia para o Apps Script principal.
     - name: Rodar push via docker compose clonando o repositorio atual no servidor da google
       env:
         CLASPRC_DATA: ${{ secrets.CLASPRC_DATA }}
-        SCRIPT_ID: ${{ secrets.SCRIPT_ID }}
+        SCRIPT_ID: ${{ secrets.SCRIPT_ID_APP }}
       run: docker compose run --rm clone-this-repository
+
+    # Passo 3: Atualiza a Planilha Mestre (A Ponte dos Clientes)
+    # Pega apenas os arquivos leves do diretório local (Ponte.js e configurações) 
+    # e atualiza a planilha base de onde os clientes farão as cópias.
+    - name: Clonar na planilha mestre o projeto atual
+      env:
+        CLASPRC_DATA: ${{ secrets.CLASPRC_DATA }}
+        SCRIPT_ID: ${{ secrets.SCRIPT_ID_SHEET }}
+      run: docker compose run --rm clone-project
+      
 
 
 
